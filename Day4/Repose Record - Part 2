@@ -1,0 +1,87 @@
+#include <fstream>
+#include <cstring>
+using namespace std;
+ifstream fin("record.in");
+ofstream fout("record.out");
+short int i,n,month,day,mi,ID,aux,h,j,k,v[3401][60],x,fr[3401];
+char s[1110][51];
+int hour(){
+    int nr=0;
+    while(s[k][i]!=' ')
+        i++;
+    i++;
+    while(s[k][i]>='0' && s[k][i]<='9'){
+        nr=nr*10+s[k][i]-'0';
+        i++;
+    }
+    i--;
+    return nr;
+}
+int time(){
+    int nr=0;
+    while(s[k][i]!=':')
+        i++;
+    i++;
+    while(s[k][i]>='0' && s[k][i]<='9'){
+        nr=nr*10+s[k][i]-'0';
+        i++;
+    }
+    i--;
+    return nr;
+}
+char status(){
+    char value=0;
+    while(s[k][i]!=0 && (s[k][i]<'a' || s[k][i]>'z') && s[k][i]!='G')
+        i++;
+    value=s[k][i];
+    return value;
+}
+int id(){
+    int nr=0;
+    while(s[k][i]!='#')
+        i++;
+    i++;
+    while(s[k][i]>='0' && s[k][i]<='9'){
+        nr=nr*10+s[k][i]-'0';
+        i++;
+    }
+    i--;
+    return nr;
+}
+int main(){
+    while(fin.getline(s[++n],50)){
+
+    }
+    n--;
+    for(i=1;i<n;i++)
+        for(j=i+1;j<=n;j++)
+            if(strcmp(s[i],s[j])>0)
+                swap(s[i],s[j]);
+    for(k=1;k<=n;k++){
+        i=0;
+        h=hour();
+        mi=time();
+        if(h==23)
+            mi=0;
+        aux=status();
+        if(aux=='G')
+            ID=id();
+        else if(aux=='w'){
+            for(j=x;j<mi;j++)
+                v[ID][j]++;
+            fr[ID]+=mi-x;
+        }
+        x=mi;
+    }
+    int maxim=0; int nr=0; int poz=0;
+    for(i=1;i<=3400;i++){
+        for(j=1;j<=59;j++)
+            if(v[i][j]>maxim){
+                maxim=v[i][j];
+                nr=i;
+                poz=j;
+            }
+    }
+    fout<<nr*poz;
+    return 0;
+}
