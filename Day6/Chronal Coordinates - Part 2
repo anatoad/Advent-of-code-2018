@@ -1,0 +1,76 @@
+#include <fstream>
+#include <cstring>
+using namespace std;
+ifstream fin("coordinates.in");
+ofstream fout("coordinates.out");
+int i,j,n,nr,x,y,p,u,a[360][360],b[360][360];
+int dx[]={0,-1,0,1,0},dy[]={0,0,1,0,-1};
+char s[21];
+struct numar{
+    int l,c;
+}q[150000];
+int numar(){
+    int w=0;
+    while(s[i]<'0' || s[i]>'9')
+        i++;
+    while(s[i]>='0' && s[i]<='9'){
+        w=w*10+s[i]-'0';
+        i++;
+    }
+    return w;
+}
+void coada(int x,int y){
+    int p,u,l,c,lnou,cnou,r;
+    p=u=1;
+    memset(a,0,sizeof(a));
+    q[1].l=x;
+    q[1].c=y;
+    while(p<=u){
+        l=q[p].l;
+        c=q[p].c;
+        for(r=1;r<=4;r++){
+            lnou=l+dx[r];
+            cnou=c+dy[r];
+            if(lnou>=1 && lnou<=n && cnou>=1 && cnou<=n){
+                if(a[lnou][cnou]==0){
+                    a[lnou][cnou]=a[l][c]+1;
+                    if(b[lnou][cnou]!=-1){
+                        if(b[lnou][cnou]+a[lnou][cnou]>=10000)
+                            b[lnou][cnou]=-1;
+                        else
+                            b[lnou][cnou]+=a[lnou][cnou];
+                    }
+                    q[++u].l=lnou;
+                    q[u].c=cnou;
+                }
+            }
+        }
+        p++;
+    }
+}
+void fill(int i, int j){
+    nr++; b[i][j]=0;
+    for(int r=1;r<=4;r++){
+        int l=i+dx[r];
+        int c=j+dy[r];
+        if(l>=1 && l<=n && c>=1 && c<=n && b[l][c]>0)
+            fill(l,c);
+    }
+}
+ int main(){
+    n=360;
+    while(fin.getline(s,20)){
+      i=0; nr++;
+      y=numar(); x=numar();
+      coada(x,y);
+    }
+    for(i=1;i<=n;i++)
+        for(j=1;j<=n;j++)
+            if(b[i][j]>0){
+                nr=0;
+                fill(i,j);
+                fout<<nr;
+                return 0;
+            }
+    return 0;
+ }
