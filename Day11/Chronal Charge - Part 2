@@ -1,0 +1,35 @@
+#include <fstream>
+#include <cstring>
+using namespace std;
+ifstream fin("charge.in");
+ofstream fout("charge.out");
+long long v[305][305],nr,maxim,ID,i,j,n,x,y,l,lm;
+int main()
+{
+    fin>>x;
+    n=300;
+    for(i=1;i<=n;i++)
+        for(j=1;j<=n;j++){
+            swap(i,j);
+            ID=i+10;
+            nr=(ID*j+x)*ID/100%10-5;
+            swap(i,j);
+            v[i][j]=nr;
+        }
+    for(i=1;i<=n;i++)
+    for(j=1;j<=n;j++)
+        v[i][j]+=v[i-1][j]+v[i][j-1]-v[i-1][j-1];
+    maxim=-9223372036854775808;
+    for(l=1;l<=n;l++){
+    for(i=l;i<=300;i++)
+        for(j=l;j<=300;j++)
+            if(v[i][j]-v[i-l][j]-v[i][j-l]+v[i-l][j-l]>maxim){
+                maxim=v[i][j]-v[i-l][j]-v[i][j-l]+v[i-l][j-l];
+                x=j-l+1;
+                y=i-l+1;
+                lm=l;
+            }
+    }
+    fout<<x<<','<<y<<','<<lm;
+   return 0;
+}
