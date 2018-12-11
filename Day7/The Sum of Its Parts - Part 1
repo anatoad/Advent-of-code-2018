@@ -1,0 +1,40 @@
+#include <fstream>
+#include <cstring>
+using namespace std;
+ifstream fin("sum.in");
+ofstream fout("sum.out");
+int i,v[30][30],j,k,ok;
+char s[51],ID,nr;
+char numar(){
+    while(s[i]<'A' || s[i]>'Z')
+        i++;
+    i++;
+    return s[i-1];
+}
+int main()
+{
+    while(fin.getline(s,50)){
+        i=1;
+        nr=numar();
+        ID=numar();
+        v[0][ID-'A'+1]++;
+        v[v[0][ID-'A'+1]][ID-'A'+1]=nr-'A'+1;
+    }
+    ok=26;
+    while(ok!=0)
+    for(i=1;i<=26 && ok!=0;i++){
+        if(v[0][i]==0){
+            v[0][i]=-1;
+            nr='A'+i-1;
+            fout<<nr;
+            ok--;
+            for(j=1;j<=26;j++)
+                if(j!=i && v[0][j]>0)
+                    for(k=1;k<=26;k++)
+                        if(v[k][j]==i)
+                            v[0][j]--;
+            i=27;
+        }
+    }
+   return 0;
+}
