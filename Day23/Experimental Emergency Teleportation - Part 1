@@ -1,0 +1,51 @@
+#include <fstream>
+#include <cstring>
+#include <cmath>
+using namespace std;
+ifstream fin("teleportation.in");
+ofstream fout("teleportation.out");
+long long i,j,n,Max,poz,d,nr;
+char s[50];
+struct numar{
+    long long x,y,z,r;
+}v[1005];
+int numar(){
+    int nr=0,ok=0;
+    while(s[i]<'0' || s[i]>'9'){
+        if(s[i]=='-')
+            ok=1;
+        i++;
+    }
+    while(s[i]>='0' && s[i]<='9'){
+        nr=nr*10+s[i]-'0';
+        i++;
+    }
+    if(ok==1)
+        nr=-nr;
+    return nr;
+
+}
+long long dist(long long a, long long b){
+    return (abs(v[a].x-v[b].x))+(abs(v[a].y-v[b].y))+(abs(v[a].z-v[b].z));
+}
+int main()
+{
+    while(fin.getline(s+1,50)){
+        i=1;
+        v[++n].x=numar();
+        v[n].y=numar();
+        v[n].z=numar();
+        v[n].r=numar();
+        if(v[n].r>Max){
+            Max=v[n].r;
+            poz=n;
+        }
+    }
+    for(i=1;i<=n;i++){
+        d=dist(i,poz);
+        if(d<=Max)
+            nr++;
+    }
+    fout<<nr;
+   return 0;
+}
